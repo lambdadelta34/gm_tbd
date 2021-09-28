@@ -1,0 +1,34 @@
+[package]
+name = "main"
+version = "0.1.0"
+edition = "2018"
+
+[features]
+default = [
+  # "bevy/bevy_audio",
+  # "bevy/bevy_gilrs",
+  # "bevy/bevy_gltf",
+  "bevy/bevy_wgpu",
+  "bevy/bevy_winit",
+  "bevy/render",
+  "bevy/png",
+  # "bevy/hdr",
+  # "bevy/mp3",
+  # "bevy/x11",
+]
+
+[dependencies]
+bevy = { version = "0.5.0", default-features = false, features = ["dynamic", "jpeg"] }
+bevy_rapier3d = { version = "0.11.0", features = ["serde-serialize", "simd-stable", "render"] }
+
+[profile.dev]
+opt-level = 0
+debug = true
+incremental = true
+
+[profile.release]
+opt-level = 3
+# lto = "thin"
+
+[profile.dev.package."*"]
+opt-level = 3
