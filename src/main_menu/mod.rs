@@ -7,7 +7,7 @@ impl Plugin for BevyPlugin {
     fn build(&self, app: &mut AppBuilder) {
         app.init_resource::<ButtonMaterials>()
             .add_system_set(
-                SystemSet::on_enter(GameState::MainMenu).with_system(build_main_menu.system()), // .with_system(setup_background.system()),
+                SystemSet::on_enter(GameState::MainMenu).with_system(build_main_menu.system()),
             )
             .add_system_set(
                 SystemSet::on_resume(GameState::MainMenu).with_system(build_main_menu.system()),
@@ -90,7 +90,6 @@ fn build_main_menu(
                     width: Val::Percent(100.),
                     height: Val::Percent(100.),
                 },
-                align_self: AlignSelf::Center,
                 flex_direction: FlexDirection::ColumnReverse,
                 align_items: AlignItems::Center,
                 justify_content: JustifyContent::SpaceEvenly,
@@ -140,16 +139,7 @@ fn spawn_button(
     parent
         .spawn_bundle(ButtonBundle {
             material: button_materials.none.clone(),
-            style: Style {
-                size: Size {
-                    width: Val::Percent(10.),
-                    height: Val::Px(30.),
-                },
-                flex_direction: FlexDirection::ColumnReverse,
-                align_items: AlignItems::Center,
-                justify_content: JustifyContent::SpaceEvenly,
-                ..Style::default()
-            },
+            style: Style::default(),
             ..ButtonBundle::default()
         })
         .insert(item)
@@ -198,9 +188,6 @@ fn click_menu_item(
             }
             MenuItem::Exit => app_exit_events.send(AppExit),
         },
-        // Interaction::Hovered => {
-        //     // Here you can add an effect on hover if you want c:
-        // }
         _ => {}
     });
 }
@@ -218,10 +205,10 @@ fn build_options_menu(mut commands: Commands, button_materials: Res<ButtonMateri
     commands
         .spawn_bundle(NodeBundle {
             style: Style {
-                size: Size {
-                    width: Val::Percent(100.0),
-                    height: Val::Percent(100.0),
-                },
+                // size: Size {
+                //     width: Val::Percent(100.0),
+                //     height: Val::Percent(100.0),
+                // },
                 flex_direction: FlexDirection::ColumnReverse,
                 align_items: AlignItems::Center,
                 justify_content: JustifyContent::SpaceEvenly,
@@ -235,29 +222,13 @@ fn build_options_menu(mut commands: Commands, button_materials: Res<ButtonMateri
         })
         .insert(OptionsMenu)
         .with_children(|parent| {
-            parent.spawn_bundle(TextBundle {
-                style: Style { ..Style::default() },
-                text: Text::with_section(
-                    "",
-                    TextStyle {
-                        font: font.clone(),
-                        font_size: 24.0,
-                        color: Color::WHITE,
-                    },
-                    TextAlignment {
-                        vertical: VerticalAlign::Center,
-                        horizontal: HorizontalAlign::Center,
-                    },
-                ),
-                ..TextBundle::default()
-            });
             parent
                 .spawn_bundle(ButtonBundle {
                     style: Style {
-                        size: Size {
-                            width: Val::Percent(10.),
-                            height: Val::Px(30.),
-                        },
+                        // size: Size {
+                        //     width: Val::Percent(10.),
+                        //     height: Val::Px(30.),
+                        // },
                         flex_direction: FlexDirection::ColumnReverse,
                         align_items: AlignItems::Center,
                         justify_content: JustifyContent::SpaceEvenly,
@@ -296,7 +267,7 @@ fn return_button(
     query: Query<&Interaction, With<ReturnButton>>,
 ) {
     query.for_each(|interaction| {
-        println!("{:?}", interaction);
+        info!("{:?}", interaction);
         match interaction {
             Interaction::Clicked => {
                 app_state
